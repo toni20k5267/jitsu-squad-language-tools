@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argument Comparison Tool</title>
+    <style>
+        body {
+		background-color: #01c6ec;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .file-inputs {
+            margin-bottom: 20px;
+        }
+        .results {
+            display: flex;
+            gap: 20px;
+        }
+        .list-container {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .list-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .list-item {
+            padding: 5px;
+            margin: 2px 0;
+        }
+        .error {
+            background-color: #cc0000;
+        }
+		button{
+		margin-bottom:20px;
+    background-color: #ffcc00; /* Bright yellow */
+    border: none;
+    color: #000; /* Black text */
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Arcade-style font */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 5px 0 #b3a300, 0 10px 0 #b3a300, 0 15px 0 #b3a300, 0 20px 0 #b3a300; /* Shadow effect */
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+button:hover {
+    box-shadow: 0 5px 0 #ffcc00, 
+                0 10px 0 #ffcc00, 
+                0 15px 0 #ffcc00, 
+                0 20px 0 #ffcc00,
+                0 -5px 10px rgba(255,204,0,0.5); /* Glowing effect on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+button:active {
+    box-shadow: none; /* Remove shadow on click */
+    transform: translateY(5px); /* Pressed effect */
+}
+		input{
+		margin-bottom: 20px;
+    background-color: #ffcc00; /* Bright yellow */
+    border: none;
+    color: #000; /* Black text */
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Arcade-style font */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 5px 0 #b3a300, 0 10px 0 #b3a300, 0 15px 0 #b3a300, 0 20px 0 #b3a300; /* Shadow effect */
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+input:hover {
+    box-shadow: 0 5px 0 #ffcc00, 
+                0 10px 0 #ffcc00, 
+                0 15px 0 #ffcc00, 
+                0 20px 0 #ffcc00,
+                0 -5px 10px rgba(255,204,0,0.5); /* Glowing effect on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+input:active {
+    box-shadow: none; /* Remove shadow on click */
+    transform: translateY(5px); /* Pressed effect */
+}
+.theme-button{
+position: sticky; top: 0; z-index: 1000;
+background-color:#009bb9; 
+border-radius:10px; padding: 10px 10px;
+}
+    </style>
+</head>
+<body>
+    <div class="file-inputs">
+        <div style="display:grid;"><input type="file" class="nahhh" id="file1" accept=".txt">Here put the original file(as .txt)</div>
+        <div style="display:grid;"><input type="file" id="file2" class="nahhh" accept=".txt">Here put your file(as .txt)</div>
+        <button onclick="compareFiles()">Compare Files</button>
+		<button onclick="howItWorks()">How it works</button>
+		
+    </div>
+	<div class="theme-button"><button onclick="toggleTheme()">Toggle theme</button></div>
+    
+    <div class="results">
+        <div class="list-container">
+            <div class="list-title">File 1 Results</div>
+            <div id="list1"></div>
+        </div>
+        <div class="list-container">
+            <div class="list-title">File 2 Results</div>
+            <div id="list2"></div>
+        </div>
+    </div>
+
+    <script>
+	function howItWorks(){
+	alert('This works by searching for a {,"}, and then stores everything till another {"}, and puts it in a list. If it shows an error where there is just a {","}, that means you should search for the previous result, and find the ",", and add a space after the comma.')
+	alert('Enjoy! Good luck with translating!')
+	}
+        function extractQuotedText(text) {
+            const pattern = /,"([^"]*)"/g;
+            const matches = [];
+            let match;
+            
+            while ((match = pattern.exec(text)) !== null) {
+                matches.push(match[1]);
+            }
+            
+            return matches;
+        }
+
+        function compareArrays(arr1, arr2) {
+            const errors = new Set();
+            
+            // Check for missing or different items
+            arr1.forEach((item, index) => {
+                if (index >= arr2.length || arr2[index] !== item) {
+                    errors.add(index);
+                }
+            });
+            
+            // Check for extra items in arr2
+            for (let i = arr1.length; i < arr2.length; i++) {
+                errors.add(i);
+            }
+            
+            return errors;
+        }
+
+        function displayResults(list1, list2, errorIndices) {
+            const list1Element = document.getElementById('list1');
+            const list2Element = document.getElementById('list2');
+            
+            // Clear previous results
+            list1Element.innerHTML = '';
+            list2Element.innerHTML = '';
+            
+            // Display list 1
+            list1.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.textContent = `${index + 1}. "${item}"`;
+                list1Element.appendChild(div);
+            });
+            
+            // Display list 2 with error highlighting
+            list2.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                if (errorIndices.has(index)) {
+                    div.className += ' error';
+                }
+                div.textContent = `${index + 1}. "${item}"`;
+                list2Element.appendChild(div);
+            });
+        }
+
+        function compareFiles() {
+            const file1Input = document.getElementById('file1');
+            const file2Input = document.getElementById('file2');
+            
+            if (!file1Input.files[0] || !file2Input.files[0]) {
+                alert('Please select both files');
+                return;
+            }
+            
+            Promise.all([
+                file1Input.files[0].text(),
+                file2Input.files[0].text()
+            ]).then(([text1, text2]) => {
+                const list1 = extractQuotedText(text1);
+                const list2 = extractQuotedText(text2);
+                const errorIndices = compareArrays(list1, list2);
+                displayResults(list1, list2, errorIndices);
+            }).catch(error => {
+                console.error('Error reading files:', error);
+                alert('Error reading files. Please try again.');
+            });
+        }
+		function toggleTheme() {
+    // Get the current mode from body's data attribute
+    var body = document.body;
+    var isDarkMode = body.getAttribute('data-theme') === 'dark';
+    
+    // Toggle the mode
+    isDarkMode = !isDarkMode;
+    
+    // Set new theme to body
+    body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    
+    // Update body background
+    if (!body.classList.contains('bold-text')) {
+        body.style.backgroundColor = isDarkMode ? '#004552' : '#01c6ec';
+        body.style.transition = 'background-color 0.3s ease';
+    }
+    
+    // Get all elements EXCEPT those with bold-text class
+    var cells = document.querySelectorAll('td:not(.bold-text), th:not(.bold-text)');
+    var inputs = document.querySelectorAll('input:not(.nahhh)');
+    var tables = document.querySelectorAll('table:not(.bold-text)');
+    
+    // Update tables
+    tables.forEach(function(table) {
+        if (!table.classList.contains('bold-text')) {
+            table.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            table.style.transition = 'background-color 0.3s ease';
+        }
+    });
+    
+    // Update cells
+    cells.forEach(function(cell) {
+        if (!cell.classList.contains('bold-text')) {
+            cell.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            cell.style.color = isDarkMode ? 'white' : 'black';
+            cell.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        }
+    });
+    
+    // Update inputs
+    inputs.forEach(function(input) {
+        if (!input.classList.contains('bold-text')) {
+            input.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            input.style.color = isDarkMode ? 'white' : 'black';
+            input.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        }
+    });
+}
+    </script>
+</body>
+</html>

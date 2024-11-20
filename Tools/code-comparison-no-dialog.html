@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code comparison tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .file-inputs {
+            margin-bottom: 20px;
+        }
+        .results {
+            display: flex;
+            gap: 20px;
+            word-break: break-all;
+        }
+        .list-container {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .list-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .error {
+            background-color: #ffebee;
+        }
+		button{
+				margin-bottom: 20px;
+    background-color: #ffcc00; /* Bright yellow */
+    border: none;
+    color: #000; /* Black text */
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Arcade-style font */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 5px 0 #b3a300, 0 10px 0 #b3a300, 0 15px 0 #b3a300, 0 20px 0 #b3a300; /* Shadow effect */
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+		}
+		
+button:hover {
+    box-shadow: 0 5px 0 #ffcc00, 
+                0 10px 0 #ffcc00, 
+                0 15px 0 #ffcc00, 
+                0 20px 0 #ffcc00,
+                0 -5px 10px rgba(255,204,0,0.5); /* Glowing effect on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+button:active {
+    box-shadow: none; /* Remove shadow on click */
+    transform: translateY(5px); /* Pressed effect */
+}
+		input{
+		margin-bottom: 20px;
+    background-color: #ffcc00; /* Bright yellow */
+    border: none;
+    color: #000; /* Black text */
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Arcade-style font */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 5px 0 #b3a300, 0 10px 0 #b3a300, 0 15px 0 #b3a300, 0 20px 0 #b3a300; /* Shadow effect */
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+input:hover {
+    box-shadow: 0 5px 0 #ffcc00, 
+                0 10px 0 #ffcc00, 
+                0 15px 0 #ffcc00, 
+                0 20px 0 #ffcc00,
+                0 -5px 10px rgba(255,204,0,0.5); /* Glowing effect on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+input:active {
+    box-shadow: none; /* Remove shadow on click */
+    transform: translateY(5px); /* Pressed effect */
+}
+.baller{
+position: sticky; top: 0; z-index: 1000;
+}
+    </style>
+</head>
+<body>
+<div class="baller"><button onclick="toggleTheme()">Toggle theme</button></div>
+    <div class="file-inputs">
+        <div style="display:grid; background-color:#009bb9; border-radius:10px; padding: 10px 10px;display:flex;" id="sprma">
+		<div style="display:grid;"><input class="nahhh" type="file" id="file1" accept=".txt">Here you put the original file(as .txt)</div>
+        <div style="display:grid;"><input type="file" class="nahhh" id="file2" accept=".txt">Here you put your own file(as .txt)</div>
+        <button onclick="compareFiles()">Compare Files</button>
+		
+		</div>
+		
+    </div>
+    
+    <div class="results">
+        <div class="list-container">
+            <div class="list-title">File 1 Content</div>
+            <div id="list1"></div>
+        </div>
+        <div class="list-container">
+            <div class="list-title">File 2 Content</div>
+            <div id="list2"></div>
+        </div>
+    </div>
+
+    <script>
+        function preprocessText(text) {
+            // Remove text between :"  and "
+            const cleanedText = text.replace(/:"[^"]*"/g, '');
+            return cleanedText;
+        }
+
+        function compareFiles() {
+            const file1Input = document.getElementById('file1');
+            const file2Input = document.getElementById('file2');
+            
+            if (!file1Input.files[0] || !file2Input.files[0]) {
+                alert('Please select both files');
+                return;
+            }
+            
+            Promise.all([
+                file1Input.files[0].text(),
+                file2Input.files[0].text()
+            ]).then(([text1, text2]) => {
+                // Preprocess texts
+                const cleanedText1 = preprocessText(text1);
+                const cleanedText2 = preprocessText(text2);
+                
+                // Display processed texts with differences highlighted
+                displayComparison(cleanedText1, cleanedText2);
+            }).catch(error => {
+                console.error('Error reading files:', error);
+                alert('Error reading files. Please try again.');
+            });
+        }
+
+        function displayComparison(text1, text2) {
+            const list1Element = document.getElementById('list1');
+            const list2Element = document.getElementById('list2');
+            
+            // Clear previous results
+            list1Element.innerHTML = '';
+            list2Element.innerHTML = '';
+
+            // Function to create a diff view
+            function createDiffView(originalText, comparisonText) {
+                // Find all differences
+                let differences = [];
+                let longerText = originalText.length > comparisonText.length ? originalText : comparisonText;
+                
+                for (let i = 0; i < longerText.length; i++) {
+                    if (i >= originalText.length || i >= comparisonText.length || 
+                        originalText[i] !== comparisonText[i]) {
+                        differences.push(i);
+                    }
+                }
+
+                return { differences };
+            }
+
+            const diffResult = createDiffView(text1, text2);
+
+            // Create display for first text
+            const textSpan1 = document.createElement('div');
+            textSpan1.textContent = text1;
+            list1Element.appendChild(textSpan1);
+
+            // Create display for second text with differences highlighted
+            const textSpan2 = document.createElement('div');
+            let processedText2 = '';
+            for (let i = 0; i < text2.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = text2[i];
+                if (diffResult.differences.includes(i)) {
+                    span.style.backgroundColor = '#ffebee';
+                }
+                textSpan2.appendChild(span);
+            }
+            list2Element.appendChild(textSpan2);
+        }
+		function toggleTheme() {
+    // Get the current mode from body's data attribute
+    var body = document.body;
+    var isDarkMode = body.getAttribute('data-theme') === 'dark';
+    
+    // Toggle the mode
+    isDarkMode = !isDarkMode;
+    
+    // Set new theme to body
+    body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    
+    // Update body background
+    if (!body.classList.contains('bold-text')) {
+        body.style.backgroundColor = isDarkMode ? '#004552' : '#01c6ec';
+        body.style.transition = 'background-color 0.3s ease';
+    }
+    
+    // Get all elements EXCEPT those with bold-text class
+    var cells = document.querySelectorAll('td:not(.bold-text), th:not(.bold-text)');
+    var inputs = document.querySelectorAll('input:not(.nahhh)');
+    var tables = document.querySelectorAll('table:not(.bold-text)');
+    
+    // Update tables
+    tables.forEach(function(table) {
+        if (!table.classList.contains('bold-text')) {
+            table.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            table.style.transition = 'background-color 0.3s ease';
+        }
+    });
+    
+    // Update cells
+    cells.forEach(function(cell) {
+        if (!cell.classList.contains('bold-text')) {
+            cell.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            cell.style.color = isDarkMode ? 'white' : 'black';
+            cell.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        }
+    });
+    
+    // Update inputs
+    inputs.forEach(function(input) {
+        if (!input.classList.contains('bold-text')) {
+            input.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            input.style.color = isDarkMode ? 'white' : 'black';
+            input.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        }
+    });
+}
+    </script>
+</body>
+</html>

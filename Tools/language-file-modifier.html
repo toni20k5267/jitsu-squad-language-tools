@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Language file modifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #01c6ec;
+            font-family: Arial, sans-serif;
+        }
+        .file-inputs {
+            margin-bottom: 20px;
+        }
+        .results {
+            display: flex;
+            gap: 20px;
+        }
+        .list-container {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .list-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .list-item {
+            padding: 5px;
+            margin: 2px 0;
+        }
+        .error {
+            background-color: #cc0000;
+        }
+        button {
+		font-size: 15px;
+            margin-bottom: 25px;
+            background-color: #ffcc00;
+            border: none;
+            color: #000;
+			width: auto;
+			height: auto;
+			padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 0 5px 0 #b3a300, 0 10px 0 #b3a300, 0 15px 0 #b3a300, 0 20px 0 #b3a300;
+            transition: all 0.2s ease-in-out;
+        }
+        button:hover {
+            box-shadow: 0 5px 0 #ffcc00, 
+                        0 10px 0 #ffcc00, 
+                        0 15px 0 #ffcc00, 
+                        0 20px 0 #ffcc00,
+                        0 -5px 10px rgba(255,204,0,0.5);
+            transform: translateY(-5px);
+        }
+        button:active {
+            box-shadow: none;
+            transform: translateY(5px);
+        }
+        input {
+		font-size: 15px;
+		padding: 10px 10px;
+            margin-bottom: 25px;
+            background-color: #ffcc00;
+            border: none;
+            color: #000;
+			width: auto;
+			height: auto;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 0 5px 0 #b3a300, 0 10px 0 #b3a300, 0 15px 0 #b3a300, 0 20px 0 #b3a300;
+            transition: all 0.2s ease-in-out;
+        }
+        input:hover {
+            box-shadow: 0 5px 0 #ffcc00, 
+                        0 10px 0 #ffcc00, 
+                        0 15px 0 #ffcc00, 
+                        0 20px 0 #ffcc00,
+                        0 -5px 10px rgba(255,204,0,0.5);
+            transform: translateY(-5px);
+        }
+        input:active {
+            box-shadow: none;
+            transform: translateY(5px);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1a1a1a;
+			color: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+                        background-color: #1a1a1a;
+			width: auto;
+        }
+		#dialogTable th#balls, #dialogTable td.bold-text {
+    font-weight: bold;
+	background-color: #ffcc00;
+}
+input.dialog-input {
+    padding: 5px 5px;
+    margin-bottom: 5px;
+	margin-top: 5px;
+    background-color: rgba(0, 0, 0, 0); /* Transparent background */
+    border: none;
+    color: white;
+    width: 100%;
+    height: auto;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 0px; /* Remove rounded corners */
+    box-shadow: none; /* Remove shadow completely */
+    transition: none; /* Disable any transitions */
+}
+
+input.dialog-input:hover {
+    box-shadow: none; /* Ensure no shadow on hover */
+    transform: translateY(0); /* Prevent movement on hover */
+}
+
+input.dialog-input:active {
+    box-shadow: none; /* Ensure no shadow on active state */
+    transform: translateY(0); /* Prevent movement on active state */
+}
+.dialog-input {
+        width: 100%; /* Optional: Ensure the input fits the cell */
+    }
+    th:first-child, td:first-child {
+        white-space: nowrap; /* Prevent text from wrapping */
+        width: 0.1%; /* Ensure the column is as narrow as its content */
+    }
+th#Argument, td:nth-child(5) {
+        white-space: nowrap; /* Prevent text from wrapping */
+        width: 0.1%; /* Ensure the column is as narrow as its content */
+    }
+	th#balls, td:nth-child(5) { /* #balls column */
+    white-space: nowrap; /* Prevent text from wrapping */
+    width: 0.1%; /* Ensure the column is as narrow as its content */
+	color: black;
+}
+
+th#ballstwo, td:nth-child(5) { /* #balls column */
+    white-space: nowrap; /* Prevent text from wrapping */
+    width: 0.1%; /* Ensure the column is as narrow as its content */
+}
+#buttonholders{
+display:flex;
+position: sticky; top: 0; z-index: 1000;
+}
+button.toggle-button {
+    padding: 5px 5px;
+    margin-bottom: 5px;
+	margin-top: 5px;
+    border: none;
+    color: #000;
+    width: 100%;
+    height: auto;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 0px; /* Remove rounded corners */
+    box-shadow: none; /* Remove shadow completely */
+    transition: none; /* Disable any transitions */
+}
+
+button.toggle-button:hover {
+    box-shadow: none; /* Ensure no shadow on hover */
+    transform: translateY(0); /* Prevent movement on hover */
+}
+
+button.toggle-button:active {
+    box-shadow: none; /* Ensure no shadow on active state */
+    transform: translateY(0); /* Prevent movement on active state */
+}
+    </style>
+</head>
+<body>
+<div id="buttonholders">
+<div style="display:grid; background-color:#009bb9; border-radius:10px; padding: 10px 10px;"><button id="saveFileButton">Save File</button></div>
+    <div style="display:grid; background-color:#009bb9; border-radius:10px; padding: 10px 10px;"><input class="nahhh" type="file" id="jsonFile" accept=".json,.txt"> This is for the translated(by you) file.</div>
+	<div style="display:grid; background-color:#009bb9; border-radius:10px; padding: 10px 10px;"><input class="nahhh" type="file" id="originalJsonFile" accept=".json,.txt">This is for the original file.</div>
+	<button onclick="toggleTheme()" style="display:grid; background-color:#009bb9; border-radius:10px; padding: 10px 10px;">Toggle Theme</button>
+	</div>
+    <table id="dialogTable">
+        <thead>
+            <tr>
+                <th></th>
+                <th  id="Argument">Argument</th>
+                <th id="customDialog">Dialog</th>
+				<th id="ballstwo">Original Dialog</th>
+				<th id="balls">The thing after LANG_</th>
+            </tr>
+        </thead>
+        <tbody id="dialogBody"></tbody>
+    </table>
+
+<script>
+document.getElementById('jsonFile').addEventListener('change', function (e) {
+    handleFileInput(e.target.files[0], false);
+});
+
+document.getElementById('originalJsonFile').addEventListener('change', function (e) {
+    handleFileInput(e.target.files[0], true);
+});
+
+let dialogMap = {}; // Store dialogs from the second file
+let primaryData = []; // Store rows from the first file
+
+function handleFileInput(file, isOriginalFile) {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        const fileContent = event.target.result;
+
+        if (isOriginalFile) {
+            // Parse the second file and store Dialog values in dialogMap
+            try {
+                const regex = /"([^"]+)"\s*:\s*"([^"]+)"/g;
+                let match;
+
+                while ((match = regex.exec(fileContent)) !== null) {
+                    const argument = match[1];
+                    const dialog = match[2];
+                    dialogMap[argument] = dialog; // Map argument to dialog
+                }
+                updateTableWithOriginalDialogs(); // Update the table
+            } catch (error) {
+                console.error('Error parsing the original file:', error);
+                alert('Error parsing the original file. Please check the format.');
+            }
+        } else {
+            // Parse the first file and populate rows
+            const dialogBody = document.getElementById('dialogBody');
+            dialogBody.innerHTML = ''; // Clear previous results
+            primaryData = []; // Reset primary data
+
+            try {
+                const regex = /"([^"]+)"\s*:\s*"([^"]+)"/g;
+                let match;
+                const colors = ['red', 'yellow', 'blue', 'green', 'orange', 'purple', 'pink', '#f9ff7a', '#e27aff', '#ff7ac6', '#ff7a7a', '#7aebff', '#ab7aff'];
+                let currentColorIndex = -1;
+                let lastLangExtract = null;
+
+                while ((match = regex.exec(fileContent)) !== null) {
+                    const argument = match[1];
+                    const dialog = match[2];
+
+                    // Extract the string between LANG_ and the first _ after it
+                    const langMatch = argument.match(/LANG_([^_]+)/);
+                    const langExtract = langMatch ? langMatch[1] : 'N/A';
+
+                    if (langExtract !== lastLangExtract) {
+                        currentColorIndex = (currentColorIndex + 1) % colors.length;
+                        lastLangExtract = langExtract;
+                    }
+
+                    const row = {
+                        argument,
+                        dialog,
+                        langExtract,
+                        bgColor: colors[currentColorIndex],
+                    };
+                    primaryData.push(row);
+                }
+                renderTable();
+            } catch (error) {
+                console.error('Error parsing the first file:', error);
+                alert('Error parsing the first file. Please check the format.');
+            }
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+function renderTable() {
+    const dialogBody = document.getElementById('dialogBody');
+    dialogBody.innerHTML = ''; // Clear table
+
+    primaryData.forEach((row, index) => {
+        const tableRow = dialogBody.insertRow();
+        
+        // Toggle Button Column
+        const toggleCell = tableRow.insertCell(0);
+        const toggleButton = document.createElement('button');
+        toggleButton.className = 'toggle-button';
+        toggleButton.textContent = 'Toggle';
+        toggleButton.addEventListener('click', function() {
+            if (toggleButton.style.backgroundColor === 'red') {
+                toggleButton.style.backgroundColor = '#ffcc00';
+            } else {
+                toggleButton.style.backgroundColor = 'red';
+            }
+        });
+        toggleCell.appendChild(toggleButton);
+
+        // Argument Column
+        const argCell = tableRow.insertCell(1);
+        argCell.textContent = row.argument;
+
+        // Editable Dialog Column
+        const dialogCell = tableRow.insertCell(2);
+        const dialogInput = document.createElement('input');
+        dialogInput.type = 'text';
+        dialogInput.value = row.dialog;
+        dialogInput.dataset.index = index; // Store the index for updating
+        dialogInput.classList.add('dialog-input'); // Add a specific class
+        dialogInput.addEventListener('input', (e) => {
+            const updatedIndex = e.target.dataset.index;
+            primaryData[updatedIndex].dialog = e.target.value; // Update the data
+        });
+        dialogCell.appendChild(dialogInput);
+
+        // Original Dialog Column
+        const originalDialogCell = tableRow.insertCell(3);
+        originalDialogCell.textContent = dialogMap[row.argument] || 'N/A'; // Add corresponding original dialog
+
+        // The thing after LANG_ Column
+        const langCell = tableRow.insertCell(4);
+        langCell.textContent = row.langExtract;
+        langCell.classList.add('bold-text');
+        langCell.style.backgroundColor = row.bgColor;
+    });
+}
+
+function updateTableWithOriginalDialogs() {
+    renderTable(); // Re-render table with updated original dialogs
+}
+
+// Save Functionality
+document.getElementById('saveFileButton').addEventListener('click', saveFile);
+
+function saveFile() {
+    const updatedData = {};
+    primaryData.forEach((row) => {
+        updatedData[row.argument] = row.dialog; // Use updated dialogs
+    });
+
+    const jsonContent = JSON.stringify(updatedData); // Compact JSON format
+
+    // Create a downloadable blob
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link and trigger download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'updated_dialogs.json'; // Name of the file to save
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Revoke the blob URL to free memory
+    URL.revokeObjectURL(url);
+}
+function toggleTheme() {
+    // Get the current mode from body's data attribute
+    var body = document.body;
+    var isDarkMode = body.getAttribute('data-theme') === 'dark';
+    
+    // Toggle the mode
+    isDarkMode = !isDarkMode;
+    
+    // Set new theme to body
+    body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    
+    // Update body background
+    if (!body.classList.contains('bold-text')) {
+        body.style.backgroundColor = isDarkMode ? '#004552' : '#01c6ec';
+        body.style.transition = 'background-color 0.3s ease';
+    }
+    
+    // Get all elements EXCEPT those with bold-text class
+    var cells = document.querySelectorAll('td:not(.bold-text), th:not(.bold-text)');
+    var inputs = document.querySelectorAll('input:not(.nahhh)');
+    var tables = document.querySelectorAll('table:not(.bold-text)');
+    
+    // Update tables
+    tables.forEach(function(table) {
+        if (!table.classList.contains('bold-text')) {
+            table.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            table.style.transition = 'background-color 0.3s ease';
+        }
+    });
+    
+    // Update cells
+    cells.forEach(function(cell) {
+        if (!cell.classList.contains('bold-text')) {
+            cell.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            cell.style.color = isDarkMode ? 'white' : 'black';
+            cell.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        }
+    });
+    
+    // Update inputs
+    inputs.forEach(function(input) {
+        if (!input.classList.contains('bold-text')) {
+            input.style.backgroundColor = isDarkMode ? '#1a1a1a' : 'white';
+            input.style.color = isDarkMode ? 'white' : 'black';
+            input.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        }
+    });
+}
+
+
+
+</script>
+</body>
+</html>
