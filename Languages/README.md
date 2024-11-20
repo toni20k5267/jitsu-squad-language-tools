@@ -2,7 +2,10 @@
 
 ## Here is a copy of the tools section from README.md in main:
 
-## Custom languages
+# Available language files/file edits
+
+## English
+The original English file from Jitsu Squad
 
 ### Polski/Polish
 Zrobiony przeze mnie z pomocą sztucznej inteligencji. Jeśli są jakieś błędy, albo jeśli byś chciał/a żebym coś zmienił, powiedz mi, robiąc "[Issue](https://github.com/toni20k5267/jitsu-squad-language-tools/issues/new)" lub "[Pull request](https://github.com/toni20k5267/jitsu-squad-language-tools/compare)". Made by me with some help of ai. If there are any bugs, or if you would want me to change something, let me know by making an "[Issue](https://github.com/toni20k5267/jitsu-squad-language-tools/issues/new)" or "[Pull request](https://github.com/toni20k5267/jitsu-squad-language-tools/compare)".
