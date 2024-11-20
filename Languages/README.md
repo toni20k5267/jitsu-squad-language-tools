@@ -1,6 +1,6 @@
 # This is the Languages folder. It has the translations/custom story files that I or someone else(if someone else made a translation/custom story) made.
 
-## Here is a copy of the tools section from README.md in main:
+## Here is a copy of the languages section from README.md in main:
 
 # Available language files/file edits
 
